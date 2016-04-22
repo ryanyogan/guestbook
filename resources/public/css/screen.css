@@ -66,5 +66,12 @@ form, .error {
   margin-bottom: 50px;
   position: relative;
   background: white;
+  width: 520px;
+}
+
+.content {
+  background: white;
+  width: 520px;
+  padding: 30px;
 }
 

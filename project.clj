@@ -27,7 +27,9 @@
                  [conman "0.4.9"]
                  [com.h2database/h2 "1.4.191"]
                  [luminus-log4j "0.1.3"]
-                 [org.clojure/clojurescript "1.7.228" :scope "provided"]]
+                 [org.clojure/clojurescript "1.7.228" :scope "provided"]
+                 [reagent "0.5.1"]
+                 [cljs-ajax "0.5.2"]]
 
   :min-lein-version "2.0.0"
 
@@ -43,14 +45,17 @@
             [lein-cljsbuild "1.1.1"]]
   :target-path "target/%s/"
   :cljsbuild
-  {:builds {:app {:source-paths ["src/cljs"]
-                  :compiler {:output-to "target/cljsbuild/public/js/app.js"
-                             :output-dir "target/cljsbuild/public/js/out"
-                             :main "guestbook.core"
-                             :asset-path "js/out"
-                             :optimizations :none
-                             :source-map :true
-                             :pretty-print true}}}}
+  {:builds
+   {:app
+    {:source-paths ["src/cljs"]
+     :compiler     {:output-to     "target/cljsbuild/public/js/app.js"
+                    :output-dir    "target/cljsbuild/public/js/out"
+                    :main          "guestbook.core"
+                    :asset-path    "/js/out"
+                    :warnings      true
+                    :optimizations :none
+                    :source-map    true
+                    :pretty-print  true}}}}
   :clean-targets
   ^{:protect false}
   [:target-path
@@ -58,23 +63,23 @@
    [:cljsbuild :builds :app :compiler :output-to]]
 
   :profiles
-  {:uberjar {:omit-source true
-             :aot :all
-             :uberjar-name "guestbook.jar"
-             :source-paths ["env/prod/clj"]
-             :resource-paths ["env/prod/resources"]}
+  {:uberjar       {:omit-source    true
+                   :aot            :all
+                   :uberjar-name   "guestbook.jar"
+                   :source-paths   ["env/prod/clj"]
+                   :resource-paths ["env/prod/resources"]}
    :dev           [:project/dev :profiles/dev]
    :test          [:project/test :profiles/test]
-   :project/dev  {:dependencies [[prone "1.1.1"]
-                                 [ring/ring-mock "0.3.0"]
-                                 [ring/ring-devel "1.4.0"]
-                                 [pjstadig/humane-test-output "0.8.0"]]
-                  :plugins      [[com.jakemccrary/lein-test-refresh "0.14.0"]]
-                  :source-paths ["env/dev/clj" "test/clj"]
-                  :resource-paths ["env/dev/resources"]
-                  :repl-options {:init-ns user}
-                  :injections [(require 'pjstadig.humane-test-output)
-                               (pjstadig.humane-test-output/activate!)]}
-   :project/test {:resource-paths ["env/dev/resources" "env/test/resources"]}
-   :profiles/dev {}
+   :project/dev   {:dependencies   [[prone "1.1.1"]
+                                    [ring/ring-mock "0.3.0"]
+                                    [ring/ring-devel "1.4.0"]
+                                    [pjstadig/humane-test-output "0.8.0"]]
+                   :plugins        [[com.jakemccrary/lein-test-refresh "0.14.0"]]
+                   :source-paths   ["env/dev/clj" "test/clj"]
+                   :resource-paths ["env/dev/resources"]
+                   :repl-options   {:init-ns user}
+                   :injections     [(require 'pjstadig.humane-test-output)
+                                    (pjstadig.humane-test-output/activate!)]}
+   :project/test  {:resource-paths ["env/dev/resources" "env/test/resources"]}
+   :profiles/dev  {}
    :profiles/test {}})
