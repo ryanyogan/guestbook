@@ -33,5 +33,4 @@
 (defroutes home-routes
   (GET "/" [] (home-page))
   (GET "/messages" [] (response/ok (db/get-messages)))
-  (POST "/message" req (save-message! req))
   (GET "/about" [] (about-page)))
